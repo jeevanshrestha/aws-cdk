@@ -2,12 +2,18 @@
 import os
 
 import aws_cdk as cdk
+from aws_cdk import App, Environment
+from dotenv import load_dotenv
 
-from aws_cdk.aws_cdk_stack import AwsCdkStack
+load_dotenv()
 
+# from aws_cdk.aws_cdk_stack import AwsCdkStack
 
-app = cdk.App()
-AwsCdkStack(app, "AwsCdkStack",
+from my_first_aws_cdk.my_first_aws_cdk import MyPythonCdkAppStack
+
+app = App()
+ 
+MyPythonCdkAppStack(app, "my-first-cdk-stack",
     # If you don't specify 'env', this stack will be environment-agnostic.
     # Account/Region-dependent features and context lookups will not work,
     # but a single synthesized template can be deployed anywhere.
@@ -15,7 +21,7 @@ AwsCdkStack(app, "AwsCdkStack",
     # Uncomment the next line to specialize this stack for the AWS Account
     # and Region that are implied by the current CLI configuration.
 
-    #env=cdk.Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
+    env=Environment(account=os.getenv('CDK_DEFAULT_ACCOUNT'), region=os.getenv('CDK_DEFAULT_REGION')),
 
     # Uncomment the next line if you know exactly what Account and Region you
     # want to deploy the stack to. */

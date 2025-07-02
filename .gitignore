@@ -8,3 +8,48 @@ __pycache__
 # CDK asset staging directory
 .cdk.staging
 cdk.out
+ 
+
+# .gitignore additions for a Python AWS CDK project using uv
+
+# uv virtual environment and cache
+.uv
+.uv-cache
+uv.cache/
+uv_venv/
+uv-venv/
+uv-env/
+uvenv/
+
+# Python
+*.pyc
+*.pyo
+*.pyd
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg
+*.egg-info/
+.installed.cfg
+*.manifest
+*.spec
+
+# AWS CDK context files
+cdk.context.json
+cdk.context.lock.json
+
+# Local env files
+.env.*
+.envrc
+
+# VSCode
+.vscode/
