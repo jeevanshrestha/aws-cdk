@@ -1,5 +1,5 @@
 {
-  "app": "python3 app.py",
+  "app": "python3 app.py", 
   "watch": {
     "include": [
       "**"
@@ -15,6 +15,14 @@
     ]
   },
   "context": {
+    "dev":{
+      "account": "480926032159",
+      "region": "us-east-1"
+    },
+    "prod":{
+      "account": "480926032159",
+      "region": "ap-southeast-2"
+    },
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:checkSecretUsage": true,
     "@aws-cdk/core:target-partitions": [
