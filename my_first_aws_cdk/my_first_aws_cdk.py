@@ -16,12 +16,13 @@ class MyPythonCdkAppStack(Stack):
         
         # Create S3 bucket with KMS encryption
         bucket = s3.Bucket(self, "MyBucket",
-            encryption=s3.BucketEncryption.KMS,
-            encryption_key=key,  # type: ignore
+            encryption=s3.BucketEncryption.S3_MANAGED,
+        #    encryption_key=key,  # type: ignore
             removal_policy=RemovalPolicy.DESTROY,  # Allow deletion for testing
             auto_delete_objects=True,  # Delete objects when bucket is deleted 
             bucket_name=f"jeeves-bucket-1",
-            versioned=True
+            versioned=True,
+            block_public_access=s3.BlockPublicAccess.BLOCK_ALL
         )
         
         print(f"Bucket created: {bucket.bucket_name}")
