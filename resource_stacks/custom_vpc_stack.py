@@ -1,8 +1,9 @@
-from aws_cdk import Stack, RemovalPolicy
-from aws_cdk import aws_ec2 as ec2 
+from aws_cdk import Stack, RemovalPolicy, Tags
+from aws_cdk import aws_ec2 as ec2 , aws_s3 as s3
 from constructs import Construct
 from aws_cdk import CfnOutput 
 from aws_cdk import aws_iam
+from datetime import datetime
 
 class MyCustomVPC(Stack):
     
@@ -20,9 +21,47 @@ class MyCustomVPC(Stack):
                     subnet_type=getattr(ec2.SubnetType, subnet["subnetType"]),
                     cidr_mask=subnet["cidrMask"]
                 ) for subnet in env_config["vpcConfig"]["subnetConfiguration"]
-            ]
+            ],
+             
         )
-        
+
+        # Tags
+        # Apply tags from JSON config
+        for tag_key, tag_value in env_config.get("tags", {}).items():
+            Tags.of(self).add(tag_key, tag_value)
+ 
+        Tags.of(self).add("CreatedDate", datetime.now().strftime("%Y-%m-%d"))
+
+        # Add specific tags to the VPC
+        Tags.of(vpc).add("Name", f"{id}-VPC")
+        Tags.of(vpc).add("Description", "Core networking infrastructure")
+
+        # Tag all subnets with their type
+        for subnet in vpc.public_subnets:
+            Tags.of(subnet).add("Name", f"{id}-PublicSubnet-{subnet.availability_zone}")
+            Tags.of(subnet).add("Network", "Public")
+            
+        for subnet in vpc.private_subnets:
+            Tags.of(subnet).add("Name", f"{id}-PrivateSubnet-{subnet.availability_zone}")
+            Tags.of(subnet).add("Network", "Private")
+
+        for subnet in vpc.isolated_subnets:
+            Tags.of(subnet).add("Name", f"{id}-IsolatedSubnet-{subnet.availability_zone}")
+            Tags.of(subnet).add("Network", "Isolated")
+
+        # Tag route tables
+        # Proper way to tag route tables
+        for i, subnet in enumerate(vpc.public_subnets):
+            # Tag the underlying L1 route table resource
+            for child in subnet.node.children:
+                if isinstance(child, ec2.CfnRouteTable):
+                    Tags.of(child).add("Name", f"{id}-PublicRouteTable-{i}")
+
+        for i, subnet in enumerate(vpc.private_subnets):
+            for child in subnet.node.children:
+                if isinstance(child, ec2.CfnRouteTable):
+                    Tags.of(child).add("Name", f"{id}-PrivateRouteTable-{i}")
+                    
         # Output all relevant VPC information
         CfnOutput(self, "VpcId", value=vpc.vpc_id)
         CfnOutput(self, "VpcCidr", value=env_config["vpcConfig"]["cidr"])
@@ -60,3 +99,15 @@ class MyCustomVPC(Stack):
                 CfnOutput(self, f"NatGatewayId{i}",
                           value=nat_gw_id,
                           description=f"NAT Gateway ID {i} in VPC")
+         
+         
+        # Resources in same account
+        # my_existing_bucket = s3.Bucket.from_bucket_name(self,
+        #                                                "JeevesK8SBucket",
+        #                                                "jeeves-k8s-sydney")
+        # CfnOutput(self, 
+        #           f"Imported Bucket{my_existing_bucket.bucket_name}",
+        #           value=my_existing_bucket.bucket_name,
+        #           description="Imported Bucket"
+        #           )
+         

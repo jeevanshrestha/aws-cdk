@@ -17,6 +17,15 @@
   "context": {
     "environments": {
       "dev": {
+        "environmentName": "Development",
+        "tags": {
+          "Project": "MyProject",
+          "Environment": "Development",
+          "Owner": "Jeevan Shrestha",
+          "SupportEmail": "jeevan.shrestha@example.com",
+          "CostCenter": "DEV-123",
+          "DataClassification": "Internal"
+        },
         "vpcConfig": {
           "cidr": "10.0.0.0/16",
           "maxAzs": 2,
@@ -36,6 +45,15 @@
         }
       },
       "prod": {
+        "environmentName": "Production",
+        "tags": {
+          "Project": "MyProject",
+          "Environment": "Production",
+          "Owner": "Jeevan Shrestha",
+          "SupportEmail": "jeevan.shrestha@example.com",
+          "CostCenter": "PROD-456",
+          "DataClassification": "Confidential"
+        },
         "vpcConfig": {
           "cidr": "10.1.0.0/16",
           "maxAzs": 3,

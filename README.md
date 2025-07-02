@@ -1,7 +1,7 @@
 
 # Welcome to AWS CDK Python project!
 
-This is a blank project for CDK development with Python.
+This project provides a starting point for developing cloud infrastructure using the AWS Cloud Development Kit (CDK) with Python. It includes all the necessary configuration files and a recommended project structure to help you define AWS resources using familiar Python code. Use this repository to model, provision, and manage your AWS infrastructure as code, leveraging the power and flexibility of the AWS CDK framework.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
